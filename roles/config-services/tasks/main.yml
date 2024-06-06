@@ -1,0 +1,5 @@
+- name: Ensure docker installed and running
+  import_tasks: docker.yml
+  tags:
+    - config-services
+    - config-services-docker

@@ -1,0 +1,11 @@
+- name: Ensure base packages installed
+  import_tasks: base_packages.yml
+  tags:
+    - base
+    - base-packages
+
+- name: Ensure base packages installed
+  import_tasks: vim_config.yml
+  tags:
+    - base
+    - base-vim-config

@@ -1,0 +1,11 @@
+# Installed Packages Management
+base_packages:
+  - apt-transport-https
+  - bash-completion
+  - dnsutils
+  - htop
+  - iotop
+  - python3
+  - python3-pip
+  - sl
+  - vim

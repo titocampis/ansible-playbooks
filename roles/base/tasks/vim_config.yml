@@ -1,0 +1,16 @@
+- name: Vim Configuration
+  template:
+    src: vimrc.j2
+    dest: "{{ item }}"
+  with_items:
+    - "/root/.vimrc"
+    - "/home/{{ ansible_user }}/.vimrc"
+
+- name: Include vim useful aliases on ~/.bashrc
+  blockinfile:
+    path: "/home/{{ ansible_user }}/.bashrc"
+    block: |
+      # Vim aliases
+      alias svim='sudo -E vim'
+      alias svb='sudo -E vim ~/.bashrc'
+    state: present

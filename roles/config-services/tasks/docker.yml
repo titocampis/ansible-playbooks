@@ -1,0 +1,5 @@
+- name: Ensure base packages installed
+  apt:
+    name: "{{ base_packages }}"
+    state: latest
+    update_cache: yes
