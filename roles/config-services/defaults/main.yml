@@ -1,6 +1,6 @@
 # Docker Management
 docker_apt_key: "https://download.docker.com/linux/ubuntu/gpg"
-docker_arm_repository: "deb [arch=armhf] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} stable"
+docker_repository: "deb [arch=armhf] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} stable"
 
 # Fail2ban Management
 fail2ban_sshd_enabled: true

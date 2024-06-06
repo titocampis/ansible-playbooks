@@ -1,12 +1,5 @@
-- name: Include dokcer, vim useful aliases on ~/.bashrc
+- name: Include useful aliases on ~/.bashrc
   blockinfile:
     path: "/home/{{ ansible_user }}/.bashrc"
-    block: |
-      # Vim aliases
-      alias svim='sudo -E vim'
-      alias svb='sudo -E vim ~/.bashrc'
-
-      # Docker aliases
-      alias docker-rm-all='docker rm -f $(docker ps -aq)'
-      alias docker-prune-all='docker container prune -f && docker image prune -f'
+    block: "{{ base_bashrc_block }}"
     state: present

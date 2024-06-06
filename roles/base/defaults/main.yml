@@ -12,3 +12,17 @@ base_packages:
   - python3-pip
   - sl
   - vim
+
+# ~/.bashrc config
+base_bashrc_block: |
+    # Vim aliases
+    alias svim='sudo -E vim'
+    alias svb='sudo -E vim ~/.bashrc'
+
+    # Docker aliases
+    alias docker-rm-all='docker rm -f $(docker ps -aq)'
+    alias docker-prune-all='docker container prune -f && docker image prune -f'
+
+    # Kubectl aliases
+    alias kc='kubectl'
+    alias kcc='kubectl config'

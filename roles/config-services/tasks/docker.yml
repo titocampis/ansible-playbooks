@@ -5,7 +5,7 @@
 
 - name: Add docker repository for ARM architecture
   apt_repository:
-    repo: "{{ docker_arm_repository }}"
+    repo: "{{ docker_repository }}"
     state: present
 
 - name: Update the apt package index again
@@ -35,3 +35,6 @@
     name: docker
     enabled: yes
     state: started
+
+# WARNING: You need to close your current terminal and start another one in order your user
+# have access to docker group

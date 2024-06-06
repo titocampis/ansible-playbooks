@@ -4,6 +4,10 @@
     - config-services
     - config-services-docker
 
+# WARNING: You need to close your current terminal and start another one in order your user
+# have access to docker group
+
+
 - name: Configure the most beautiful banner
   import_tasks: banner.yml
   tags:
