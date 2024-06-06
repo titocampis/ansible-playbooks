@@ -1,0 +1,42 @@
+# Check the banner sudo /usr/sbin/update-motd
+- name: Install necessary packages for beautiful banner
+  apt:  
+    name:
+      - figlet
+      - toilet
+    state: present  
+
+- name: Configure the motd.d file to 00-custom-header
+  template:
+    src: "00-custom-header.j2"
+    dest: "/etc/update-motd.d/00-custom-header"
+    owner: root
+    mode: 0755
+
+- name: Configure the motd.d file 99-ansible-info
+  template:
+    src: "99-ansible-info.j2"
+    dest: "/etc/update-motd.d/99-ansible-info"
+    owner: root
+    mode: 0755
+
+- name: Disable motd.d files to don't show them in banner
+  ansible.builtin.file:
+    path: "/etc/update-motd.d/{{ item }}"
+    state: file
+    mode: 0644
+  ignore_errors: yes
+  with_items:
+    - 10-uname
+
+- name: Disable default MOTD message
+  file:
+    path: /etc/motd
+    state: absent
+
+# The programs included with the Debian GNU/Linux system are free software;
+# the exact distribution terms for each program are described in the
+# individual files in /usr/share/doc/*/copyright.
+
+# Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+# permitted by applicable law.

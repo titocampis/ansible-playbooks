@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# {{ ancible_managed }}
+
+printf "\n\e[33mWARNING:\e[0m Unauthorized access to this system is forbidden. By accessing this system, you agree that your actions may be monitored.\n"
+printf "\e[33mWARNING:\e[0m {{ ancible_managed }}\n\n"
+
+printf "Last Ansible Run: {{ now(utc=true,fmt='%Y-%m-%d %H:%M:%S') }} UTC\n"
