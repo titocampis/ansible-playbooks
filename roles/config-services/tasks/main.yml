@@ -3,3 +3,15 @@
   tags:
     - config-services
     - config-services-docker
+
+- name: Configure the most beautiful banner
+  import_tasks: banner.yml
+  tags:
+    - config-services
+    - config-services-banner
+
+- name: Ensure fail2ban installed, configured and running
+  import_tasks: fail2ban.yml
+  tags:
+    - config-services
+    - config-services-fail2ban

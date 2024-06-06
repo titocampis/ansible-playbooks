@@ -1,0 +1,21 @@
+# https://pimylifeup.com/raspberry-pi-fail2ban/
+# Logs inside /var/log/auth.log
+- name: Ensure rsyslog and fail2ban packages installed
+  apt:
+    name:
+      - rsyslog
+      - fail2ban
+    state: present
+    update_cache: yes
+
+- name: Enable and start rsyslog service
+  systemd:
+    name: rsyslog
+    enabled: yes
+    state: started
+
+- name: Configure fail2ban. WARNING!!! -->  Keep the template updated checking /etc/fail2ban/jail.conf when upgrade fail2ban
+  template:
+    src: fail2ban_jail.local.j2
+    dest: "/etc/fail2ban/jail.local"
+  notify: Restart fail2ban

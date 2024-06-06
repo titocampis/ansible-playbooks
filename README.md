@@ -77,11 +77,57 @@ vars_files:
 
 And then add at the end of the `ansible-playbook` execution `ask-vault-pass`:
 
-````bash
+```bash
 ansible-playbook playbook... -i .... --ask-vault-pass
 ```
 
 > :paperclip: **NOTE:** If we want to edit the vault file:
-> ```
+> ```bash
 > ansible-vault edit vault.yml
 > ```
+
+## Launching base ansible playbook
+
+- To ensure base packages installed on raspberrypi:
+```bash
+ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-packages --check
+```
+
+- To configure useful topics on ~/.bashrc:
+```bash
+ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-bashrc-config --check
+```
+
+- To configure vim:
+```bash
+ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-vim-config --check
+```
+
+To check more available tasks check [roles/base/tasks/main.yml](roles/base/tasks/main.yml)
+
+## Launching config-services playbook
+
+- To install and start docker:
+```bash
+ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-docker --check
+```
+
+- To configure the best banner of the world:
+```bash
+ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-banner --check
+```
+
+- To install, configure and start fail2ban:
+```bash
+ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-fail2ban --check
+```
+
+To check more available tasks check [roles/config-services/tasks/main.yml](roles/config-services/tasks/main.yml)
+
+## Next Steps
+| Status | Task |
+|----------|----------|
+| :hourglass_flowing_sand: | Check on docker ssh if you can make work the ed25519 |
+| :hourglass_flowing_sand: | Sort your rsa / ed25519 keys and let one per device |
+| :hourglass_flowing_sand: | Config the sshd service to accept rsa and do not accept password authentication |
+| :hourglass_flowing_sand: | Modify the ansible vault to add the public keys you want to have inside the host and remove ssh-password |

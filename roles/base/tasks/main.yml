@@ -4,7 +4,13 @@
     - base
     - base-packages
 
-- name: Ensure base packages installed
+- name: Bashrc useful configuration
+  import_tasks: bashrc_config.yml
+  tags:
+    - base
+    - base-bashrc-config
+
+- name: Ensure vim configuration
   import_tasks: vim_config.yml
   tags:
     - base

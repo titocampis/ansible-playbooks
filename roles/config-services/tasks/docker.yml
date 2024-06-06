@@ -1,5 +1,37 @@
-- name: Ensure base packages installed
+- name: Ensure docker repo key installed
+  apt_key:
+    url: "{{ docker_apt_key }}"
+    state: present
+
+- name: Add docker repository for ARM architecture
+  apt_repository:
+    repo: "{{ docker_arm_repository }}"
+    state: present
+
+- name: Update the apt package index again
   apt:
-    name: "{{ base_packages }}"
-    state: latest
     update_cache: yes
+    force_apt_get: yes
+
+- name: Install docker
+  apt:
+    name: docker-ce
+    state: present
+
+- name: Add the ansible_user to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
+# - name: Ensure configuration for docker daemon
+#   template:
+#     src: daemon.json.j2
+#     dest: /etc/docker/daemon.json
+#   notify: restart docker
+
+- name: Enable and start Docker service
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
