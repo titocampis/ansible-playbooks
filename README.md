@@ -77,11 +77,44 @@ vars_files:
 
 And then add at the end of the `ansible-playbook` execution `ask-vault-pass`:
 
-````bash
+```bash
 ansible-playbook playbook... -i .... --ask-vault-pass
 ```
 
 > :paperclip: **NOTE:** If we want to edit the vault file:
-> ```
+> ```bash
 > ansible-vault edit vault.yml
 > ```
+
+## Launching base ansible playbook
+
+- To ensure base packages installed on raspberrypi:
+```bash
+ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-packages --check
+```
+
+- To configure useful topics on ~/.bashrc:
+```bash
+ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-bashrc-config --check
+```
+
+- To configure vim:
+```bash
+ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-vim-config --check
+```
+
+To check more available tasks check [roles/base/tasks/main.yml](roles/base/tasks/main.yml)
+
+## Launching config-services playbook
+
+- To install and start docker:
+```bash
+ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-docker --check
+```
+
+- To install, configure and start fail2ban:
+```bash
+ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-fail2ban --check
+```
+
+To check more available tasks check [roles/config-services/tasks/main.yml](roles/config-services/tasks/main.yml)

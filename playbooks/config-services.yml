@@ -2,6 +2,7 @@
   become: yes
   # vars:
   vars_files:
+    - ../general_vars.yml
     - ../vault.yml
   # tasks:
   #   - name: Debug test_var
