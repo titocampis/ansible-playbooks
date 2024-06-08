@@ -17,6 +17,7 @@ base_packages:
   - vim
 
 # Authorized Keys Management
+base_disable_pass_auth: false
 base_authorized_keys: []
 # - user: pepito
 #   pubkey: ....

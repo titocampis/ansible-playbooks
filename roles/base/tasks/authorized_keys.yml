@@ -5,8 +5,19 @@
     state: present
   with_items: "{{ base_authorized_keys }}"
 
-- name: Configure the ssh service to accept PubkeyAuthentication
-  template:
-    src: sshd_config.j2
-    dest: /etc/ssh/sshd_config
+- name: Enable PubkeyAuthentication setting in sshd_config # By default it is disabled
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PubkeyAuthentication\s+'
+    line: 'PubkeyAuthentication yes'
+    state: present
+  notify: Restart sshd
+
+- name: Disable PasswordAuthentication setting in sshd_config # By default it is enabled
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication\s+'
+    line: 'PasswordAuthentication no'
+    state: present
+  when: base_disable_pass_auth
   notify: Restart sshd
