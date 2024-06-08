@@ -1,0 +1,12 @@
+- name: Ensure users authorized keys set up 
+  authorized_key:
+    user: "{{ item.user }}"
+    key: "{{ item.pubkey }}"
+    state: present
+  with_items: "{{ base_authorized_keys }}"
+
+- name: Configure the ssh service to accept PubkeyAuthentication
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+  notify: Restart sshd

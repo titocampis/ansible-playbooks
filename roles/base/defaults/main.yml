@@ -1,3 +1,6 @@
+# General Variable
+ancible_managed: 'WARNING: This file is managed by Ansible. Any changes will be overwritten.'
+
 # Installed Packages Management
 base_packages:
   - apt-transport-https
@@ -14,7 +17,9 @@ base_packages:
   - vim
 
 # Authorized Keys Management
-authorized_keys: []
+base_authorized_keys: []
+# - user: pepito
+#   pubkey: ....
 
 # Shell config
 base_shell: '.bashrc'

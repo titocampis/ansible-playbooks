@@ -15,3 +15,9 @@
   tags:
     - base
     - base-vim-config
+
+- name: Ensure authorized keys
+  import_tasks: authorized_keys.yml
+  tags:
+    - base
+    - base-keys-config
