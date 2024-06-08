@@ -86,8 +86,51 @@ ansible-playbook playbook... -i .... --ask-vault-pass
 > ansible-vault edit vault.yml
 > ```
 
-## Launching base ansible playbook
+## To enable PubkeyAuthentication in your raspberry pi
+:one: Configure the [playbooks/base.yml](playbooks/base.yml) adding the public key / keys, for example:
+```yml
+vars:
+  base_authorized_keys:
+    - user: jiminy-cricket
+    pubkey: "the content of the public key"
+```
 
+> :paperclip: **NOTE:** Key pair can be generated using:
+> ```bash
+> ssh-keygen -t ed25519 -f ~/.ssh/key_name -C "your_email"
+> ```
+> For security reasons it is hardly recommended to introduce a passphrase.
+
+> :warning: **WARNING:** Be completely sure it is the public key and not the private one, because share your private key can lead to serious security problems. Private keys should never be sent or shared.
+
+:two: Optional (but recomended for more security): disable the password authentication in [playbooks/base.yml](playbooks/base.yml):
+```yml
+vars:
+  base_disable_pass_auth: true # By default is false
+```
+
+:three: Launch the playbook (with `--diff` flag to see changes)
+```bash
+ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-keys-config --diff --check
+```
+
+:four: Check your new fancy way of authenticate in your Raspberry Pi!
+
+:five: Now you can remove the `ansible_ssh_pass` from the `vault.yml` file managed by Ansible:
+```bash
+ansible-vault edit vault.yml
+```
+:six: Start the ssh-agent and add your key
+```bash
+eval $(ssh-agent -s)  
+```
+```bash
+ssh-add ~/.ssh/key_name
+```
+
+:seven: Try again to run ansible!
+
+## Launching base ansible playbook
 - To ensure base packages installed on raspberrypi:
 ```bash
 ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-packages --check
@@ -106,7 +149,6 @@ ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pas
 To check more available tasks check [roles/base/tasks/main.yml](roles/base/tasks/main.yml)
 
 ## Launching config-services playbook
-
 - To install and start docker:
 ```bash
 ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-docker --check
@@ -127,7 +169,5 @@ To check more available tasks check [roles/config-services/tasks/main.yml](roles
 ## Next Steps
 | Status | Task |
 |----------|----------|
-| :hourglass_flowing_sand: | Check on docker ssh if you can make work the ed25519 |
-| :hourglass_flowing_sand: | Sort your rsa / ed25519 keys and let one per device |
-| :hourglass_flowing_sand: | Config the sshd service to accept rsa and do not accept password authentication |
-| :hourglass_flowing_sand: | Modify the ansible vault to add the public keys you want to have inside the host and remove ssh-password |
+| :white_check_mark: | Config the sshd service to accept pubkey and do not accept password authentication |
+| :hourglass_flowing_sand: | Sort your rsa / ed25519 keys |
