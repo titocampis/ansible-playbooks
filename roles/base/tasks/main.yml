@@ -4,14 +4,20 @@
     - base
     - base-packages
 
-- name: Bashrc useful configuration
-  import_tasks: bashrc_config.yml
+- name: Shell useful configuration
+  import_tasks: shell_config.yml
   tags:
     - base
-    - base-bashrc-config
+    - base-shell-config
 
 - name: Ensure vim configuration
   import_tasks: vim_config.yml
   tags:
     - base
     - base-vim-config
+
+- name: Ensure authorized keys
+  import_tasks: authorized_keys.yml
+  tags:
+    - base
+    - base-keys-config

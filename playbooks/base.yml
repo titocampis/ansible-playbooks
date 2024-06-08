@@ -1,12 +1,18 @@
 - hosts: raspberrypi
   become: yes
-  # vars:
+  vars:
+    base_authorized_keys:
+      - user: "{{ ansible_user }}"
+        pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAiyothk0lxAYTALHXypgl1usasFt5gY5JD7yiUqaG7x andreasscorelli@gmail.com"
+  
   vars_files:
     - ../general_vars.yml
     - ../vault.yml
+  
   # tasks:
   #   - name: Debug test_var
   #     debug:
   #       var: ansible_managed
+  
   roles:
     - "roles/base"
