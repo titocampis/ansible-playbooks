@@ -13,16 +13,15 @@ base_packages:
   - sl
   - vim
 
-# ~/.bashrc config
-base_bashrc_block: |
+# Authorized Keys Management
+authorized_keys: []
+
+# Shell config
+base_shell: '.bashrc'
+base_shell_block: |
     # Vim aliases
     alias svim='sudo -E vim'
-    alias svb='sudo -E vim ~/.bashrc'
 
     # Docker aliases
     alias docker-rm-all='docker rm -f $(docker ps -aq)'
     alias docker-prune-all='docker container prune -f && docker image prune -f'
-
-    # Kubectl aliases
-    alias kc='kubectl'
-    alias kcc='kubectl config'

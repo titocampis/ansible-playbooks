@@ -93,9 +93,9 @@ ansible-playbook playbook... -i .... --ask-vault-pass
 ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-packages --check
 ```
 
-- To configure useful topics on ~/.bashrc:
+- To configure useful topics on your favourite shell:
 ```bash
-ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-bashrc-config --check
+ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-shell-config --check
 ```
 
 - To configure vim:

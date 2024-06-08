@@ -1,5 +1,0 @@
-- name: Include useful aliases on ~/.bashrc
-  blockinfile:
-    path: "/home/{{ ansible_user }}/.bashrc"
-    block: "{{ base_bashrc_block }}"
-    state: present
