@@ -11,6 +11,9 @@ filetype on
 " Enable plugins and load plugin for the detected file type.
 filetype plugin on
 
+" Set the colorscheme to default
+colorscheme default
+
 " Load an indent file for the detected file type.
 filetype indent on
 
@@ -49,3 +52,15 @@ set ignorecase
 
 " Use highlighting when doing a search.
 set hlsearch
+
+" Enable auto completion menu after pressing TAB.
+set wildmenu
+
+" Make wildmenu behave like similar to Bash completion.
+set wildmode=list:longest
+
+" Enable black theme
+" set background=dark
+
+" Tab helper
+" set smarttab
