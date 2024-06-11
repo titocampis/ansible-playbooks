@@ -1,6 +1,8 @@
 - hosts: raspberrypi
   become: yes
-  # vars:
+  
+  vars:
+    docker_enabled: true
   
   vars_files:
     - ../general_vars.yml

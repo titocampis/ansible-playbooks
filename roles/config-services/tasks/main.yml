@@ -3,6 +3,7 @@
   tags:
     - config-services
     - config-services-docker
+  when: docker_enabled
 
 # WARNING: You need to close your current terminal and start another one in order your user
 # have access to docker group
@@ -19,3 +20,4 @@
   tags:
     - config-services
     - config-services-fail2ban
+  when: fail2ban_enabled

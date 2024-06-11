@@ -2,11 +2,12 @@
 ancible_managed: 'WARNING: This file is managed by Ansible. Any changes will be overwritten.'
 
 # Docker Management
-docker_apt_key: "https://download.docker.com/linux/ubuntu/gpg"
+docker_enabled: false
+docker_GPG_key: "https://download.docker.com/linux/ubuntu/gpg"
 docker_repository: "deb [arch=armhf] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} stable"
 
 # Fail2ban Management
-fail2ban_sshd_enabled: true
+fail2ban_sshd_enabled: false
 fail2ban_sshd_banaction: 'iptables-multiport'
 fail2ban_sshd_bantime: 1800 # seconds
 fail2ban_sshd_maxretry: 3

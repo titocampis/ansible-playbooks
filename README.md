@@ -2,8 +2,24 @@
 
 In this repository we have all the roles and playbooks to configuro a Raspberry Pi from scratch using **Ansible**
 
-## Project Structure
+## Index
+1. [Project Structure](#project-structure)
+2. [Previous Steps before executing Ansible Playbooks](#previous-steps-before-executing-ansible-playbooks)
+3. [Sensitive Data managed by Ansible vault](#sensitive-data-managed-by-ansible-vault)
+4. [To enable PubkeyAuthentication in your raspberry pi](#to-enable-pubkeyauthentication-in-your-raspberry-pi)
+5. [Launching base ansible playbook](#launching-base-ansible-playbook)
+    - [Ensure base packages installed on raspberrypi](#ensure-base-packages-installed-on-raspberrypi)
+    - [Configure useful topics on your favourite shell](#configure-useful-topics-on-your-favourite-shell)
+    - [Configure vim](#configure-vim)
+    - [More](#more)
+6. [Launching config-services playbook](#launching-config-services-playbook)
+    - [Install and start docker](#install-and-start-docker)
+    - [Configure the best banner of the world](#configure-the-best-banner-of-the-world)
+    - [Install, configure and start fail2ban](#install-configure-and-start-fail2ban)
+    - [More](#more-1)
+7. [Next Steps](#next-steps)
 
+## Project Structure
 ```bash
 inventories/ # Folder containing all the servers where ansible will run and its configuration
     └── inventory.ini # Main inventory file
@@ -131,43 +147,52 @@ ssh-add ~/.ssh/key_name
 :seven: Try again to run ansible!
 
 ## Launching base ansible playbook
-- To ensure base packages installed on raspberrypi:
+#### Ensure base packages installed on raspberrypi
 ```bash
 ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-packages --check
 ```
 
-- To configure useful topics on your favourite shell:
+#### Configure useful topics on your favourite shell
+1. Configure your favorite shell on the playbook the var `base_shell: <your_favourite_shell>` (by default it is `base_shell: '.bashrc'`)
+2. Launch the playbook:
 ```bash
 ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-shell-config --check
 ```
 
-- To configure vim:
+#### Configure vim:
 ```bash
 ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-vim-config --check
 ```
 
+#### More
 To check more available tasks check [roles/base/tasks/main.yml](roles/base/tasks/main.yml)
 
 ## Launching config-services playbook
-- To install and start docker:
+#### Install and start docker
+1. Configure on your playbook the var `docker_enabled: true`
+2. Launch the playbook:
 ```bash
 ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-docker --check
 ```
 
-- To configure the best banner of the world:
+#### Configure the best banner of the world:
 ```bash
 ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-banner --check
 ```
 
-- To install, configure and start fail2ban:
+#### Install, configure and start fail2ban:
+1. Configure on your playbook the var `fail2ban_enabled: true`
+2. Launch the playbook:
 ```bash
 ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-fail2ban --check
 ```
 
+#### More
 To check more available tasks check [roles/config-services/tasks/main.yml](roles/config-services/tasks/main.yml)
 
 ## Next Steps
 | Status | Task |
 |----------|----------|
-| :white_check_mark: | Config the sshd service to accept pubkey and do not accept password authentication |
-| :hourglass_flowing_sand: | Sort your rsa / ed25519 keys |
+| :white_check_mark: | Sort your rsa / ed25519 keys |
+| :hourglass_flowing_sand: | Config the sshd service to not accept password authentication |
+| :hourglass_flowing_sand: | Move the roles to another github projects and import them here with ansible-galaxy |
