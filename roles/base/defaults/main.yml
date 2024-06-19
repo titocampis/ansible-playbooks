@@ -31,3 +31,6 @@ base_shell_block: |
     # Docker aliases
     alias docker-rm-all='docker rm -f $(docker ps -aq)'
     alias docker-prune-all='docker container prune -f && docker image prune -f'
+
+# Timezone
+base_timezone: "Europe/Madrid"

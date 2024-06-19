@@ -21,3 +21,9 @@
   tags:
     - base
     - base-keys-config
+
+- name: Configure Timezone
+  import_tasks: set_timezone.yml
+  tags:
+    - base
+    - base-timezone
