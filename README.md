@@ -2,7 +2,7 @@
  
 Welcome to the Ultimate Raspberry Pi Setup repository! :strawberry:
 
-This project is my go-to resource for effortlessly configuring my RaspberryPI in an easy and straightforward way, powered by the magic of Ansible. :tophat: ✨
+This project is my go-to resource for effortlessly configuring Raspberry Pi in an easy and straightforward way, powered by the magic of Ansible. :tophat: ✨
 
 ## Index
 1. [Project Structure](#project-structure)
