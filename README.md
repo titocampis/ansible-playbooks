@@ -26,14 +26,14 @@ This project is my go-to resource for effortlessly configuring Raspberry Pi in a
 inventories/ # Folder containing all the servers where ansible will run and its configuration
     └── inventory.ini # Main inventory file
 plays/ # Folder containing all the playbooks ro be executed on the hosts, we have one playbook per role
-    ├── base.yml # Playbook which executes the base role (basic configuration for the server)
+    ├── base.yaml # Playbook which executes the base role (basic configuration for the server)
     ├── ...
     └── 
 roles/ # Folder containing all the ansible roles (tasks to be executed on the playbooks)
     ├── base/ # Tasks for basic configuration of the server (packages, pubkeys, etc.)
-          ├── defaults/main.yml # Default configuration for the role
+          ├── defaults/main.yaml # Default configuration for the role
           ├── tasks/
-                ├── base_packages.yml # Task to ensure the base packages installed
+                ├── base_packages.yaml # Task to ensure the base packages installed
                 ├── main.yaml # File containing the configuration for all the tasks and how to use them
                 └──  ...
           └──  
@@ -71,24 +71,24 @@ service sshd restart
 ## Sensitive Data managed by Ansible vault
 To store the Ansible Sensitive Data we use [Ansible vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html).
 
-To create the vault.yml file:
+To create the vault.yaml file:
 ```bash
-ansible-vault create vault.yml
+ansible-vault create vault.yaml
 ```
 
-It will ask for password, and then **vi** editor will open and we need to fulfill it in yml format like this:
+It will ask for password, and then **vi** editor will open and we need to fulfill it in yaml format like this:
 
-```yml
+```yaml
 ansible_user: ''             
 ansible_ssh_pass: ''
 ansible_become_pass: ''
 ```
 
-Then, Ansible will create a vault file in the folder you executed the `ansible-vault`: `vault.yml`
+Then, Ansible will create a vault file in the folder you executed the `ansible-vault`: `vault.yaml`
 
 To use the vault variables inside the playbooks, we need to include:
 
-```yml
+```yaml
 vars_files:
  - relative/path/from/playbook/to/vault/file
 ```
@@ -101,12 +101,12 @@ ansible-playbook playbook... -i .... --ask-vault-pass
 
 > :paperclip: **NOTE:** If we want to edit the vault file:
 > ```bash
-> ansible-vault edit vault.yml
+> ansible-vault edit vault.yaml
 > ```
 
 ## To enable PubkeyAuthentication in your raspberry pi
-:one: Configure the [playbooks/base.yml](playbooks/base.yml) adding the public key / keys, for example:
-```yml
+:one: Configure the [playbooks/base.yaml](playbooks/base.yaml) adding the public key / keys, for example:
+```yaml
 vars:
   base_authorized_keys:
     - user: jiminy-cricket
@@ -121,22 +121,22 @@ vars:
 
 > :warning: **WARNING:** Be completely sure it is the public key and not the private one, because share your private key can lead to serious security problems. Private keys should never be sent or shared.
 
-:two: Optional (but recomended for more security): disable the password authentication in [playbooks/base.yml](playbooks/base.yml):
-```yml
+:two: Optional (but recomended for more security): disable the password authentication in [playbooks/base.yaml](playbooks/base.yaml):
+```yaml
 vars:
   base_disable_pass_auth: true # By default is false
 ```
 
 :three: Launch the playbook (with `--diff` flag to see changes)
 ```bash
-ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-keys-config --diff --check
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --ask-vault-pass --tags base-keys-config --diff --check
 ```
 
 :four: Check your new fancy way of authenticate in your Raspberry Pi!
 
-:five: Now you can remove the `ansible_ssh_pass` from the `vault.yml` file managed by Ansible:
+:five: Now you can remove the `ansible_ssh_pass` from the `vault.yaml` file managed by Ansible:
 ```bash
-ansible-vault edit vault.yml
+ansible-vault edit vault.yaml
 ```
 :six: Start the ssh-agent and add your key
 ```bash
@@ -151,46 +151,46 @@ ssh-add ~/.ssh/key_name
 ## Launching base ansible playbook
 #### Ensure base packages installed on raspberrypi
 ```bash
-ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-packages --check
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --ask-vault-pass --tags base-packages --check
 ```
 
 #### Configure useful topics on your favourite shell
 1. Configure your favorite shell on the playbook the var `base_shell: <your_favourite_shell>` (by default it is `base_shell: '.bashrc'`)
 2. Launch the playbook:
 ```bash
-ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-shell-config --check
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --ask-vault-pass --tags base-shell-config --check
 ```
 
 #### Configure vim:
 ```bash
-ansible-playbook playbooks/base.yml -i inventories/inventory.ini --ask-vault-pass --tags base-vim-config --check
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --ask-vault-pass --tags base-vim-config --check
 ```
 
 #### More
-To check more available tasks check [roles/base/tasks/main.yml](roles/base/tasks/main.yml)
+To check more available tasks check [roles/base/tasks/main.yaml](roles/base/tasks/main.yaml)
 
 ## Launching config-services playbook
 #### Install and start docker
 1. Configure on your playbook the var `docker_enabled: true`
 2. Launch the playbook:
 ```bash
-ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-docker --check
+ansible-playbook playbooks/config-services.yaml -i inventories/inventory.ini --ask-vault-pass --tags config-services-docker --check
 ```
 
 #### Configure the best banner of the world:
 ```bash
-ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-banner --check
+ansible-playbook playbooks/config-services.yaml -i inventories/inventory.ini --ask-vault-pass --tags config-services-banner --check
 ```
 
 #### Install, configure and start fail2ban:
 1. Configure on your playbook the var `fail2ban_enabled: true`
 2. Launch the playbook:
 ```bash
-ansible-playbook playbooks/config-services.yml -i inventories/inventory.ini --ask-vault-pass --tags config-services-fail2ban --check
+ansible-playbook playbooks/config-services.yaml -i inventories/inventory.ini --ask-vault-pass --tags config-services-fail2ban --check
 ```
 
 #### More
-To check more available tasks check [roles/config-services/tasks/main.yml](roles/config-services/tasks/main.yml)
+To check more available tasks check [roles/config-services/tasks/main.yaml](roles/config-services/tasks/main.yaml)
 
 ## Next Steps
 | Status | Task |

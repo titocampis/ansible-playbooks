@@ -1,29 +1,29 @@
 - name: Ensure base packages installed
-  import_tasks: base_packages.yml
+  import_tasks: base_packages.yaml
   tags:
     - base
     - base-packages
 
 - name: Shell useful configuration
-  import_tasks: shell_config.yml
+  import_tasks: shell_config.yaml
   tags:
     - base
     - base-shell-config
 
 - name: Ensure vim configuration
-  import_tasks: vim_config.yml
+  import_tasks: vim_config.yaml
   tags:
     - base
     - base-vim-config
 
 - name: Ensure authorized keys
-  import_tasks: authorized_keys.yml
+  import_tasks: authorized_keys.yaml
   tags:
     - base
     - base-keys-config
 
 - name: Configure Timezone
-  import_tasks: set_timezone.yml
+  import_tasks: set_timezone.yaml
   tags:
     - base
     - base-timezone

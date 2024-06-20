@@ -1,5 +1,5 @@
 - name: Ensure docker installed and running
-  import_tasks: docker.yml
+  import_tasks: docker.yaml
   tags:
     - config-services
     - config-services-docker
@@ -10,13 +10,13 @@
 
 
 - name: Configure the most beautiful banner
-  import_tasks: banner.yml
+  import_tasks: banner.yaml
   tags:
     - config-services
     - config-services-banner
 
 - name: Ensure fail2ban installed, configured and running
-  import_tasks: fail2ban.yml
+  import_tasks: fail2ban.yaml
   tags:
     - config-services
     - config-services-fail2ban

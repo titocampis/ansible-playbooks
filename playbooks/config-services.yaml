@@ -5,8 +5,8 @@
     docker_enabled: true
   
   vars_files:
-    - ../general_vars.yml
-    - ../vault.yml
+    - ../general_vars.yaml
+    - ../vault.yaml
   
   # tasks:
   #   - name: Debug test_var
