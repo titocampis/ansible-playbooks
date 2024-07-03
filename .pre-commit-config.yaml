@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: debug-statements # Checks for debugger imports and
+                             # breakpoint() in python files.
+      - id: check-ast # Python files are syntactically correct by attempting
+                      # to parse them.
+      - id: fix-byte-order-marker # Removes UTF-8 byte order markers
+                                  # (BOM) from files.
+      - id: check-json # Validates that JSON files are syntactically correct.
+      - id: detect-private-key # Scans for the presence of private keys
+                               # within the repository.
+      - id: check-yaml # Validates that YAML files are
+                       # syntactically correct.
+      - id: check-added-large-files # Warns when large files are
+                                    # added to the repository.
+      - id: check-case-conflict # Detects files that would conflict in
+                                # a case-insensitive file system.
+      - id: end-of-file-fixer # Ensures that files end with a newline.
+      - id: trailing-whitespace # Removes any trailing whitespace
+                                # from the ends of lines.
+      - id: mixed-line-ending # Ensures consistent line endings within a file,
+                              # converting all line endings into specified type.

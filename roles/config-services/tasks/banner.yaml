@@ -1,10 +1,10 @@
 # Check the banner sudo /usr/sbin/update-motd
 - name: Install necessary packages for beautiful banner
-  apt:  
+  apt:
     name:
       - figlet
       - toilet
-    state: present  
+    state: present
 
 - name: Configure the motd.d file to 00-custom-header
   template:

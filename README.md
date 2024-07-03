@@ -1,5 +1,5 @@
 # Ansible Playbooks for RaspberryPi :strawberry:
- 
+
 Welcome to the Ultimate Raspberry Pi Setup repository! :strawberry:
 
 This project is my go-to resource for effortlessly configuring Raspberry Pi in an easy and straightforward way, powered by the magic of Ansible. :tophat: ✨
@@ -27,16 +27,15 @@ inventories/ # Folder containing all the servers where ansible will run and its 
     └── inventory.ini # Main inventory file
 plays/ # Folder containing all the playbooks ro be executed on the hosts, we have one playbook per role
     ├── base.yaml # Playbook which executes the base role (basic configuration for the server)
-    ├── ...
-    └── 
+    └── ...
 roles/ # Folder containing all the ansible roles (tasks to be executed on the playbooks)
     ├── base/ # Tasks for basic configuration of the server (packages, pubkeys, etc.)
-          ├── defaults/main.yaml # Default configuration for the role
-          ├── tasks/
-                ├── base_packages.yaml # Task to ensure the base packages installed
-                ├── main.yaml # File containing the configuration for all the tasks and how to use them
-                └──  ...
-          └──  
+    │     ├── defaults/main.yaml # Default configuration for the role
+    │     ├── tasks/
+    │     │     ├── base_packages.yaml # Task to ensure the base packages installed
+    │     │     ├── main.yaml # File containing the configuration for all the tasks and how to use them
+    │     │     └──  ...
+    │     └── ...
     ├── config-services/ # Tasks for services configuration (docker, motd, sshd, etc.)
     └──  ...
 .gitignore # File including all the files and folder to not push into git
@@ -63,7 +62,8 @@ nano /etc/ssh/sshd_config
 service sshd restart
 ```
 
-> :paperclip: **NOTE:** It can be done automatically, but be carefull with the previous configuration and always check the file content before restart the sshd service:
+> [!TIP]
+> It can be done automatically, but be carefull with the previous configuration and always check the file content before restart the sshd service:
 > ```bash
 > sed -i 's/#Port 22/Port XXX/' /etc/ssh/sshd_config
 > ```
@@ -79,7 +79,7 @@ ansible-vault create vault.yaml
 It will ask for password, and then **vi** editor will open and we need to fulfill it in yaml format like this:
 
 ```yaml
-ansible_user: ''             
+ansible_user: ''
 ansible_ssh_pass: ''
 ansible_become_pass: ''
 ```
@@ -98,8 +98,8 @@ And then add at the end of the `ansible-playbook` execution `ask-vault-pass`:
 ```bash
 ansible-playbook playbook... -i .... --ask-vault-pass
 ```
-
-> :paperclip: **NOTE:** If we want to edit the vault file:
+> [!TIP]
+> If we want to edit the vault file:
 > ```bash
 > ansible-vault edit vault.yaml
 > ```
@@ -112,14 +112,15 @@ vars:
     - user: jiminy-cricket
     pubkey: "the content of the public key"
 ```
-
-> :paperclip: **NOTE:** Key pair can be generated using:
+> [!TIP]
+> Key pair can be generated using:
 > ```bash
 > ssh-keygen -t ed25519 -f ~/.ssh/key_name -C "your_email"
 > ```
 > For security reasons it is hardly recommended to introduce a passphrase.
 
-> :warning: **WARNING:** Be completely sure it is the public key and not the private one, because share your private key can lead to serious security problems. Private keys should never be sent or shared.
+> [!CAUTION]
+> Be completely sure it is the public key and not the private one, because share your private key can lead to serious security problems. Private keys should never be sent or shared.
 
 :two: Optional (but recomended for more security): disable the password authentication in [playbooks/base.yaml](playbooks/base.yaml):
 ```yaml
@@ -140,7 +141,7 @@ ansible-vault edit vault.yaml
 ```
 :six: Start the ssh-agent and add your key
 ```bash
-eval $(ssh-agent -s)  
+eval $(ssh-agent -s)
 ```
 ```bash
 ssh-add ~/.ssh/key_name

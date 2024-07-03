@@ -1,4 +1,4 @@
-- name: Ensure users authorized keys set up 
+- name: Ensure users authorized keys set up
   authorized_key:
     user: "{{ item.user }}"
     key: "{{ item.pubkey }}"
