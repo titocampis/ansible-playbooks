@@ -1,0 +1,23 @@
+# https://pimylifeup.com/raspberry-pi-fail2ban/
+# Logs inside /var/log/auth.log
+- name: Fail2ban | Ensure rsyslog and fail2ban packages installed
+  ansible.builtin.apt:
+    name:
+      - rsyslog
+      - fail2ban
+    state: present
+    update_cache: true
+
+- name: Fail2ban | Enable and start rsyslog service
+  ansible.builtin.systemd:
+    name: rsyslog
+    enabled: true
+    state: started
+
+- name: Fail2ban | Configure fail2ban. WARNING!!! -->  Keep the template updated checking /etc/fail2ban/jail.conf when upgrade fail2ban
+  ansible.builtin.template:
+    src: fail2ban_jail.local.j2
+    dest: "/etc/fail2ban/jail.local"
+    owner: root
+    mode: "0644"
+  notify: Restart fail2ban

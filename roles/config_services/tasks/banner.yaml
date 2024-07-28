@@ -1,36 +1,37 @@
 # Check the banner sudo /usr/sbin/update-motd
-- name: Install necessary packages for beautiful banner
-  apt:
+- name: Beaufiful Banner | Ensure necessary packages installed for beautiful banner
+  ansible.builtin.apt:
     name:
       - figlet
       - toilet
     state: present
 
-- name: Configure the motd.d file to 00-custom-header
-  template:
+- name: Beaufiful Banner | Configure the motd.d file to 00-custom-header
+  ansible.builtin.template:
     src: "00-custom-header.j2"
     dest: "/etc/update-motd.d/00-custom-header"
     owner: root
-    mode: 0755
+    mode: "0755"
 
-- name: Configure the motd.d file 99-ansible-info
-  template:
+- name: Beaufiful Banner | Configure the motd.d file 99-ansible-info
+  ansible.builtin.template:
     src: "99-ansible-info.j2"
     dest: "/etc/update-motd.d/99-ansible-info"
     owner: root
-    mode: 0755
+    mode: "0755"
 
-- name: Disable motd.d files to don't show them in banner
+- name: Beaufiful Banner | Disable motd.d files to don't show them in banner
   ansible.builtin.file:
     path: "/etc/update-motd.d/{{ item }}"
     state: file
-    mode: 0644
-  ignore_errors: yes
+    owner: root
+    mode: "0644"
+  ignore_errors: true
   with_items:
     - 10-uname
 
-- name: Disable default MOTD message
-  file:
+- name: Beaufiful Banner | Disable default MOTD message
+  ansible.builtin.file:
     path: /etc/motd
     state: absent
 

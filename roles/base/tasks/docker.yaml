@@ -1,0 +1,49 @@
+- name: Docker | Ensure docker official gpg key installed
+  ansible.builtin.apt_key:
+    url: "{{ base_docker_gpg_key }}"
+    state: present
+
+- name: Docker | Ensure Docker ARM repository
+  ansible.builtin.apt_repository:
+    repo: "{{ base_docker_repository }}"
+    state: present
+
+- name: Docker | Update the apt package index
+  ansible.builtin.apt:
+    update_cache: true
+    force_apt_get: true
+
+- name: Docker | Ensure docker package installed
+  ansible.builtin.apt:
+    name: docker-ce
+    state: present
+
+- name: Docker | Add the ansible_user to docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- name: Docker | Verify docker package installation
+  ansible.builtin.command: docker --version
+  register: base_docker_version
+
+- name: Docker | Display docker version
+  ansible.builtin.debug:
+    msg: "Docker version installed: {{ base_docker_version.stdout }}"
+  when: not ansible_check_mode
+
+# - name: Docker | Ensure configuration for docker daemon
+#   template:
+#     src: daemon.json.j2
+#     dest: /etc/docker/daemon.json
+#   notify: restart docker
+
+- name: Docker | Enable and start Docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started
+
+# WARNING: You need to close your current terminal and start another one in order your user
+# have access to docker group

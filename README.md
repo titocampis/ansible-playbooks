@@ -7,17 +7,17 @@ This project is my go-to resource for effortlessly configuring Raspberry Pi in a
 ## Index
 1. [Project Structure](#project-structure)
 2. [Previous Steps before executing Ansible Playbooks](#previous-steps-before-executing-ansible-playbooks)
-3. [Sensitive Data managed by Ansible vault](#sensitive-data-managed-by-ansible-vault)
-4. [To enable PubkeyAuthentication in your raspberry pi](#to-enable-pubkeyauthentication-in-your-raspberry-pi)
-5. [Launching base ansible playbook](#launching-base-ansible-playbook)
-    - [Ensure base packages installed on raspberrypi](#ensure-base-packages-installed-on-raspberrypi)
-    - [Configure useful topics on your favourite shell](#configure-useful-topics-on-your-favourite-shell)
-    - [Configure vim](#configure-vim)
+3. [Sensitive Data managed by Ansible Vault](#sensitive-data-managed-by-ansible-vault)
+4. [To enable PubkeyAuthentication in your Raspberry Pi](#to-enable-pubkeyauthentication-in-your-raspberry-pi)
+5. [Launching Base Ansible Playbook](#launching-base-ansible-playbook)
+    - [Ensure Base Packages Installed on Raspberry Pi](#ensure-base-packages-installed-on-raspberry-pi)
+    - [Configure Useful Topics on Your Favourite Shell](#configure-useful-topics-on-your-favourite-shell)
+    - [Configure Vim](#configure-vim)
     - [More](#more)
-6. [Launching config-services playbook](#launching-config-services-playbook)
-    - [Install and start docker](#install-and-start-docker)
-    - [Configure the best banner of the world](#configure-the-best-banner-of-the-world)
-    - [Install, configure and start fail2ban](#install-configure-and-start-fail2ban)
+6. [Launching config_services Playbook](#launching-config_services-playbook)
+    - [Ensure Docker Installed, Configured, Enabled, and Started](#ensure-docker-installed-configured-enabled-and-started)
+    - [Configure the Best Banner of the World](#configure-the-best-banner-of-the-world)
+    - [Install, Configure, and Start Fail2ban](#install-configure-and-start-fail2ban)
     - [More](#more-1)
 7. [Next Steps](#next-steps)
 
@@ -36,13 +36,27 @@ roles/ # Folder containing all the ansible roles (tasks to be executed on the pl
     │     │     ├── main.yaml # File containing the configuration for all the tasks and how to use them
     │     │     └──  ...
     │     └── ...
-    ├── config-services/ # Tasks for services configuration (docker, motd, sshd, etc.)
+    ├── config_services/ # Tasks for services configuration (docker, motd, sshd, etc.)
     └──  ...
 .gitignore # File including all the files and folder to not push into git
 README.md # Repository documentation
 ```
+## Requirements
+### Ansible Collections needed
+You might already have installed the following collection not included in `ansible-core`. They should be included in the project [requirements.yaml](requirements.yaml):
+- `ansible.posix`
+- `community.general`
 
-## Previous Steps before executing Ansible Playbooks
+```bash
+ansible-galaxy collection install -r requirements.yaml
+```
+
+Check whether it is installed:
+```bash
+ansible-galaxy collection list
+```
+
+### Previous Steps before executing Ansible Playbooks
 :one: Make sudo
 
 ```bash
@@ -53,7 +67,7 @@ sudo su
 
 - Edit the sshd service config file:
 ```bash
-nano /etc/ssh/sshd_config
+vim /etc/ssh/sshd_config
 ```
 
 - Replace the `Port 22` by `Port XXX`
@@ -79,9 +93,9 @@ ansible-vault create vault.yaml
 It will ask for password, and then **vi** editor will open and we need to fulfill it in yaml format like this:
 
 ```yaml
-ansible_user: ''
-ansible_ssh_pass: ''
-ansible_become_pass: ''
+ansible_user: "" # user to connect through ssh
+ansible_ssh_pass: "" # no needed when authorized key
+ansible_become_pass: "" # no needed when ansible_user in visudo
 ```
 
 Then, Ansible will create a vault file in the folder you executed the `ansible-vault`: `vault.yaml`
@@ -93,15 +107,18 @@ vars_files:
  - relative/path/from/playbook/to/vault/file
 ```
 
-And then add at the end of the `ansible-playbook` execution `ask-vault-pass`:
+- Create a new file `vault_password.txt` and fulfill it just with the content of the vault password.
+
+- Add to the `ansible-playbook` execution `--vault-password-file=vault_password.txt`:
 
 ```bash
-ansible-playbook playbook... -i .... --ask-vault-pass
+ansible-playbook playbook... -i .... --vault-password-file=vault_password.txt
 ```
-> [!TIP]
+
+> [!NOTE]
 > If we want to edit the vault file:
 > ```bash
-> ansible-vault edit vault.yaml
+> ansible-vault edit vault.yaml --vault-password-file=vault_password.txt
 > ```
 
 ## To enable PubkeyAuthentication in your raspberry pi
@@ -110,7 +127,7 @@ ansible-playbook playbook... -i .... --ask-vault-pass
 vars:
   base_authorized_keys:
     - user: jiminy-cricket
-    pubkey: "the content of the public key"
+      pubkey: "the content of the public key"
 ```
 > [!TIP]
 > Key pair can be generated using:
@@ -129,8 +146,10 @@ vars:
 ```
 
 :three: Launch the playbook (with `--diff` flag to see changes)
+
+Tags: `base-keys-config`
 ```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --ask-vault-pass --tags base-keys-config --diff --check
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --tags base-keys-config --diff --check
 ```
 
 :four: Check your new fancy way of authenticate in your Raspberry Pi!
@@ -150,52 +169,68 @@ ssh-add ~/.ssh/key_name
 :seven: Try again to run ansible!
 
 ## Launching base ansible playbook
+#### Launch the full role
+Tags: `base`
+```bash
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base --check
+```
+
 #### Ensure base packages installed on raspberrypi
 ```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --ask-vault-pass --tags base-packages --check
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-packages --check
 ```
 
 #### Configure useful topics on your favourite shell
-1. Configure your favorite shell on the playbook the var `base_shell: <your_favourite_shell>` (by default it is `base_shell: '.bashrc'`)
+1. Configure your favorite shell on the playbook the var `base_shell: <your_favourite_shell>` (by default it is `base_shell: ".bashrc"`)
 2. Launch the playbook:
 ```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --ask-vault-pass --tags base-shell-config --check
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-shell-config --check
 ```
 
-#### Configure vim:
+#### Configure vim
 ```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --ask-vault-pass --tags base-vim-config --check
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-vim-config --check
 ```
 
-#### More
-To check more available tasks check [roles/base/tasks/main.yaml](roles/base/tasks/main.yaml)
+#### Ensure and configure tmux
+Tags: `base-tmux`
+```bash
+ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-tmux --check
+```
 
-## Launching config-services playbook
-#### Install and start docker
-1. Configure on your playbook the var `docker_enabled: true`
+#### Ensure docker installed, configured, enabled and started
+1. Configure on your playbook the var `base_docker_enabled: true`
 2. Launch the playbook:
 ```bash
-ansible-playbook playbooks/config-services.yaml -i inventories/inventory.ini --ask-vault-pass --tags config-services-docker --check
+ansible-playbook playbooks/config_services.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-docker --check
 ```
 
-#### Configure the best banner of the world:
+## Launching config_services ansible playbook
+#### Launch the full role
+Tags: `config-services`
 ```bash
-ansible-playbook playbooks/config-services.yaml -i inventories/inventory.ini --ask-vault-pass --tags config-services-banner --check
+ansible-playbook playbooks/config_services -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags config-services --check
+```
+
+#### Configure the best banner of the world
+Tags: `config-services-banner`
+```bash
+ansible-playbook playbooks/config_services.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags config-services-banner --check
 ```
 
 #### Install, configure and start fail2ban:
 1. Configure on your playbook the var `fail2ban_enabled: true`
 2. Launch the playbook:
+Tags: `config-services-fail2ban`
 ```bash
-ansible-playbook playbooks/config-services.yaml -i inventories/inventory.ini --ask-vault-pass --tags config-services-fail2ban --check
+ansible-playbook playbooks/config_services.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags config-services-fail2ban --check
 ```
 
 #### More
-To check more available tasks check [roles/config-services/tasks/main.yaml](roles/config-services/tasks/main.yaml)
+To check more available tasks check [roles/config_services/tasks/main.yaml](roles/config_services/tasks/main.yaml)
 
 ## Next Steps
 | Status | Task |
 |----------|----------|
-| :white_check_mark: | Sort your rsa / ed25519 keys |
-| :hourglass_flowing_sand: | Config the sshd service to not accept password authentication |
+| :white_check_mark: | Config the sshd service to not accept password authentication |
 | :hourglass_flowing_sand: | Move the roles to another github projects and import them here with ansible-galaxy |

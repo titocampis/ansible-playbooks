@@ -1,6 +1,7 @@
 repos:
+  # Generic Code Hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v4.6.0 # Replace with the latest release.
     hooks:
       - id: debug-statements # Checks for debugger imports and
                              # breakpoint() in python files.

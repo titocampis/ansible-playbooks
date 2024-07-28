@@ -1,5 +1,5 @@
-- name: Include useful aliases on your favourite shell
-  blockinfile:
+- name: Shell | Include useful aliases on your favourite shell
+  ansible.builtin.blockinfile:
     path: "/home/{{ ansible_user }}/{{ base_shell }}"
     block: "{{ base_shell_block }}"
     state: present

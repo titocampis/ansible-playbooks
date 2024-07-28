@@ -1,5 +1,6 @@
-- hosts: raspberrypi
-  become: yes
+- name: Playbook to configure the basics on Raspberry Pi
+  hosts: raspberrypi
+  become: true
 
   vars:
     base_authorized_keys:
@@ -7,7 +8,6 @@
         pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAiyothk0lxAYTALHXypgl1usasFt5gY5JD7yiUqaG7x andreasscorelli@gmail.com"
 
   vars_files:
-    - ../general_vars.yaml
     - ../vault.yaml
 
   # tasks:
