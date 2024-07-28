@@ -23,3 +23,9 @@ repos:
                                 # from the ends of lines.
       - id: mixed-line-ending # Ensures consistent line endings within a file,
                               # converting all line endings into specified type.
+
+  # Ansible lint
+  - repo: https://github.com/ansible/ansible-lint
+    rev: v24.6.1  # Replace with the latest release.
+    hooks:
+      - id: ansible-lint
