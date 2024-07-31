@@ -1,0 +1,12 @@
+- name: Configure the most beautiful banner
+  ansible.builtin.import_tasks: banner.yaml
+  tags:
+    - config-services
+    - config-services-banner
+
+- name: Ensure fail2ban installed, configured and running
+  ansible.builtin.import_tasks: fail2ban.yaml
+  tags:
+    - config-services
+    - config-services-fail2ban
+  when: config_services_fail2ban_enabled

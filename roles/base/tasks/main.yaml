@@ -1,29 +1,42 @@
 - name: Ensure base packages installed
-  import_tasks: base_packages.yaml
+  ansible.builtin.import_tasks: base_packages.yaml
   tags:
     - base
     - base-packages
 
 - name: Shell useful configuration
-  import_tasks: shell_config.yaml
+  ansible.builtin.import_tasks: shell_config.yaml
   tags:
     - base
     - base-shell-config
 
 - name: Ensure vim configuration
-  import_tasks: vim_config.yaml
+  ansible.builtin.import_tasks: vim_config.yaml
   tags:
     - base
     - base-vim-config
 
+- name: Ensure tmux installed and configured
+  ansible.builtin.import_tasks: tmux.yaml
+  tags:
+    - base
+    - base-tmux
+
 - name: Ensure authorized keys
-  import_tasks: authorized_keys.yaml
+  ansible.builtin.import_tasks: authorized_keys.yaml
   tags:
     - base
     - base-keys-config
 
-- name: Configure Timezone
-  import_tasks: set_timezone.yaml
+- name: Ensure Timezone set
+  ansible.builtin.import_tasks: set_timezone.yaml
   tags:
     - base
     - base-timezone
+
+- name: Ensure docker installed and running
+  ansible.builtin.import_tasks: docker.yaml
+  tags:
+    - config_services
+    - config_services-docker
+  when: base_docker_enabled

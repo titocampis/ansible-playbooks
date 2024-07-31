@@ -1,0 +1,10 @@
+# General Variable
+config_services_ansible_managed: 'WARNING: This file is managed by Ansible. Any changes will be overwritten.'
+
+# Fail2ban Management
+config_services_fail2ban_enabled: false
+config_services_fail2ban_sshd_enabled: false
+config_services_fail2ban_sshd_banaction: 'iptables-multiport'
+config_services_fail2ban_sshd_bantime: 1800 # seconds
+config_services_fail2ban_sshd_maxretry: 3
+config_services_fail2ban_sshd_logpath: '/var/log/auth.log'

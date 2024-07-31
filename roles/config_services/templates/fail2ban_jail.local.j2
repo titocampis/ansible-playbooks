@@ -1,4 +1,4 @@
-# {{ ancible_managed }}
+# {{ config_services_ansible_managed }}
 #
 # WARNING: heavily refactored in 0.9.0 release.  Please review and
 #          customize settings for your setup.
@@ -278,14 +278,14 @@ action = %(action_)s
 # normal (default), ddos, extra or aggressive (combines all).
 # See "tests/files/logs/sshd" or "filter.d/sshd.conf" for usage example and details.
 #mode   = normal
-{% if fail2ban_sshd_enabled %}
+{% if config_services_fail2ban_sshd_enabled %}
 enabled = true
 filter = sshd
 port    = {{ ansible_port }}
-banaction = {{ fail2ban_sshd_banaction }}
-bantime = {{ fail2ban_sshd_bantime }}
-maxretry = {{ fail2ban_sshd_maxretry }}
-logpath = {{ fail2ban_sshd_logpath }}
+banaction = {{ config_services_fail2ban_sshd_banaction }}
+bantime = {{ config_services_fail2ban_sshd_bantime }}
+maxretry = {{ config_services_fail2ban_sshd_maxretry }}
+logpath = {{ config_services_fail2ban_sshd_logpath }}
 backend = %(sshd_backend)s
 {% else %}
 enabled = false

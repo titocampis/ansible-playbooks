@@ -1,20 +1,20 @@
-- name: Ensure users authorized keys set up 
-  authorized_key:
+- name: Keys | Ensure users authorized keys set up
+  ansible.posix.authorized_key:
     user: "{{ item.user }}"
     key: "{{ item.pubkey }}"
     state: present
   with_items: "{{ base_authorized_keys }}"
 
-- name: Enable PubkeyAuthentication setting in sshd_config # By default it is disabled
-  lineinfile:
+- name: Keys | Enable PubkeyAuthentication setting in sshd_config # By default it is disabled
+  ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '^#?PubkeyAuthentication\s+'
     line: 'PubkeyAuthentication yes'
     state: present
   notify: Restart sshd
 
-- name: Disable PasswordAuthentication setting in sshd_config # By default it is enabled
-  lineinfile:
+- name: Keys | Disable PasswordAuthentication setting in sshd_config # By default it is enabled
+  ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '^#?PasswordAuthentication\s+'
     line: 'PasswordAuthentication no'

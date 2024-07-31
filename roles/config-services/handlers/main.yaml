@@ -1,9 +1,0 @@
-- name: Restart docker
-  systemd:
-    name: docker
-    state: restarted
-
-- name: Restart fail2ban
-  systemd:
-    name: fail2ban
-    state: restarted

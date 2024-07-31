@@ -1,7 +1,7 @@
 # General Variable
-ancible_managed: 'WARNING: This file is managed by Ansible. Any changes will be overwritten.'
+base_ansible_managed: "WARNING: This file is managed by Ansible. Any changes will be overwritten."
 
-# Installed Packages Management
+# Ensure Packages Installed
 base_packages:
   - apt-transport-https
   - bash-completion
@@ -14,7 +14,9 @@ base_packages:
   - python3
   - python3-pip
   - sl
+  - tmux
   - vim
+  - zsh
 
 # Authorized Keys Management
 base_disable_pass_auth: false
@@ -23,7 +25,7 @@ base_authorized_keys: []
 #   pubkey: ....
 
 # Shell config
-base_shell: '.bashrc'
+base_shell: ".bashrc" # .zshrc / .bashrc
 base_shell_block: |
     # Vim aliases
     alias svim='sudo -E vim'
@@ -32,5 +34,13 @@ base_shell_block: |
     alias docker-rm-all='docker rm -f $(docker ps -aq)'
     alias docker-prune-all='docker container prune -f && docker image prune -f'
 
+# Tmux
+base_tmux_key: "a"
+
 # Timezone
 base_timezone: "Europe/Madrid"
+
+# Docker Management
+base_docker_enabled: false
+base_docker_gpg_key: "https://download.docker.com/linux/ubuntu/gpg"
+base_docker_repository: "deb [arch=armhf] https://download.docker.com/linux/raspbian {{ ansible_distribution_release }} stable"

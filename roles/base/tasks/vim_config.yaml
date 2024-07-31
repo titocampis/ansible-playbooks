@@ -1,7 +1,12 @@
-- name: Vim Configuration
-  template:
+- name: Vim | Configure vimrc on root and {{ ansible_user }}
+  ansible.builtin.template:
     src: vimrc.j2
-    dest: "{{ item }}"
+    dest: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "0644"
   with_items:
-    - "/root/.vimrc"
-    - "/home/{{ ansible_user }}/.vimrc"
+    - path: "/root/.vimrc"
+      owner: "root"
+    - path: "/home/{{ ansible_user }}/.vimrc"
+      owner: "{{ ansible_user }}"
