@@ -1,3 +1,9 @@
 collections:
   - name: community.general
   - name: ansible.posix
+
+roles:
+  - name: b4syk
+    src: git@github.com:titocampis/ansible-role-b4syk.git
+    scm: git
+    version: "0.0.1"
