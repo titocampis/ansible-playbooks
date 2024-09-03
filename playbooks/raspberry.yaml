@@ -14,10 +14,10 @@
     - ../general_vars.yaml
     - ../vault.yaml
 
-  tasks:
-    - name: Debug test_var
-      debug:
-        var: ansible_managed
+  # tasks:
+  #   - name: Debug test_var
+  #     debug:
+  #       var: ansible_managed
 
   roles:
     - "b4syk"
