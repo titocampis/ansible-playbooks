@@ -1,8 +1,9 @@
 - name: Playbook to configure the basics on Raspberry Pi
-  hosts: raspberrypi
+  hosts: almalinux
   become: true
 
   vars:
+    b4syk_sshd_password_authentication: false
     b4syk_ssh_pubkeys:
       - user: "{{ ansible_user }}" # Work Laptop
         pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAiyothk0lxAYTALHXypgl1usasFt5gY5JD7yiUqaG7x andreasscorelli@gmail.com"
@@ -12,7 +13,7 @@
 
   vars_files:
     - ../general_vars.yaml
-    - ../vault_raspberry.yaml
+    - ../vault_almalinux.yaml
 
   # tasks:
   #   - name: Debug test_var

@@ -28,6 +28,8 @@ output/
 
 # Specific for this project
 real_inventory.ini
+*vault*
+scripts*
 
 # Ansible Roles
 playbooks/roles/*/
