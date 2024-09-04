@@ -1,25 +1,17 @@
-# Ansible Playbooks for RaspberryPi :strawberry:
+# Ansible Playbooks
 
-Welcome to the Ultimate Raspberry Pi Setup repository! :strawberry:
+GitHub project to manage all my test infraestructure with Ansible🎩
 
-This project is my go-to resource for effortlessly configuring Raspberry Pi in an easy and straightforward way, powered by the magic of Ansible. :tophat: ✨
+This project is my go-to resource for effortlessly configuring AlmaLinux, Ubuntu and RaspberryPi hosts in an easy and straightforward way, powered by the magic of Ansible ✨
 
 ## Index
 1. [Project Structure](#project-structure)
-2. [Previous Steps before executing Ansible Playbooks](#previous-steps-before-executing-ansible-playbooks)
-3. [Sensitive Data managed by Ansible Vault](#sensitive-data-managed-by-ansible-vault)
-4. [To enable PubkeyAuthentication in your Raspberry Pi](#to-enable-pubkeyauthentication-in-your-raspberry-pi)
-5. [Launching Base Ansible Playbook](#launching-base-ansible-playbook)
-    - [Ensure Base Packages Installed on Raspberry Pi](#ensure-base-packages-installed-on-raspberry-pi)
-    - [Configure Useful Topics on Your Favourite Shell](#configure-useful-topics-on-your-favourite-shell)
-    - [Configure Vim](#configure-vim)
-    - [More](#more)
-6. [Launching config_services Playbook](#launching-config_services-playbook)
-    - [Ensure Docker Installed, Configured, Enabled, and Started](#ensure-docker-installed-configured-enabled-and-started)
-    - [Configure the Best Banner of the World](#configure-the-best-banner-of-the-world)
-    - [Install, Configure, and Start Fail2ban](#install-configure-and-start-fail2ban)
-    - [More](#more-1)
-7. [Next Steps](#next-steps)
+2. [Requirements](#requirements)
+   - [Ansible Collections Needed](#ansible-collections-needed)
+   - [Previous Steps Before Executing Ansible Playbooks](#previous-steps-before-executing-ansible-playbooks)
+3. [Sensitive Data Managed by Ansible Vault](#sensitive-data-managed-by-ansible-vault)
+4. [To Enable PubkeyAuthentication in Your Hosts](#to-enable-pubkeyauthentication-in-your-hosts)
+5. [Launching Playbooks](#launching-playbooks)
 
 ## Project Structure
 ```bash
@@ -112,8 +104,8 @@ ansible-playbook playbook... -i .... --vault-password-file=vault_password.txt
 > ansible-vault edit vault.yaml --vault-password-file=vault_password.txt
 > ```
 
-## To enable PubkeyAuthentication in your raspberry pi
-:one: Configure the [playbooks/base.yaml](playbooks/base.yaml) adding the public key / keys, for example:
+## To enable PubkeyAuthentication in your hosts
+Configure the playbook `playbooks/xxxxx.yaml adding the public key / keys, for example:
 ```yaml
 vars:
   base_authorized_keys:
@@ -130,34 +122,16 @@ vars:
 > [!CAUTION]
 > Be completely sure it is the public key and not the private one, because share your private key can lead to serious security problems. Private keys should never be sent or shared.
 
-:two: Optional (but recomended for more security): disable the password authentication in [playbooks/base.yaml](playbooks/base.yaml):
-```yaml
-vars:
-  base_disable_pass_auth: true # By default is false
-```
+> [!NOTE]
+> To use ssh pub keys not in the default path and with different name as default, you should start the `ssh-agent` and add your key
+> ```bash
+> eval $(ssh-agent -s)
+> ```
+> ```bash
+> ssh-add ~/.ssh/key_name
+> ```
 
-:three: Launch the playbook (with `--diff` flag to see changes)
-
-Tags: `base-keys-config`
-```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --tags base-keys-config --diff --check
-```
-
-:four: Check your new fancy way of authenticate in your Raspberry Pi!
-
-:five: Now you can remove the `ansible_ssh_pass` from the `vault.yaml` file managed by Ansible:
-```bash
-ansible-vault edit vault.yaml
-```
-:six: Start the ssh-agent and add your key
-```bash
-eval $(ssh-agent -s)
-```
-```bash
-ssh-add ~/.ssh/key_name
-```
-
-:seven: Try again to run ansible!
+Check your new fancy way of authenticate in your hosts!
 
 ## Launching playbooks
 ```bash
