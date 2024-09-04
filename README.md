@@ -26,18 +26,9 @@ This project is my go-to resource for effortlessly configuring Raspberry Pi in a
 inventories/ # Folder containing all the servers where ansible will run and its configuration
     └── inventory.ini # Main inventory file
 plays/ # Folder containing all the playbooks ro be executed on the hosts, we have one playbook per role
-    ├── base.yaml # Playbook which executes the base role (basic configuration for the server)
-    └── ...
-roles/ # Folder containing all the ansible roles (tasks to be executed on the playbooks)
-    ├── base/ # Tasks for basic configuration of the server (packages, pubkeys, etc.)
-    │     ├── defaults/main.yaml # Default configuration for the role
-    │     ├── tasks/
-    │     │     ├── base_packages.yaml # Task to ensure the base packages installed
-    │     │     ├── main.yaml # File containing the configuration for all the tasks and how to use them
-    │     │     └──  ...
-    │     └── ...
-    ├── config_services/ # Tasks for services configuration (docker, motd, sshd, etc.)
-    └──  ...
+    ├── almalinux.yaml # Playbook to run into almalinux hosts
+    ├── raspberrypi.yaml # Playbook to run into raspberrypi hosts
+    └── roles/ # Folder containing all the ansible roles (tasks to be executed on the playbooks)
 .gitignore # File including all the files and folder to not push into git
 README.md # Repository documentation
 ```
@@ -168,69 +159,10 @@ ssh-add ~/.ssh/key_name
 
 :seven: Try again to run ansible!
 
-## Launching base ansible playbook
-#### Launch the full role
-Tags: `base`
+## Launching playbooks
 ```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base --check
+ansible-playbook playbooks/almalinux.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags xxx --check
 ```
-
-#### Ensure base packages installed on raspberrypi
 ```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-packages --check
+ansible-playbook playbooks/raspberrypi.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags xxx --check
 ```
-
-#### Configure useful topics on your favourite shell
-1. Configure your favorite shell on the playbook the var `base_shell: <your_favourite_shell>` (by default it is `base_shell: ".bashrc"`)
-2. Launch the playbook:
-```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-shell-config --check
-```
-
-#### Configure vim
-```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-vim-config --check
-```
-
-#### Ensure and configure tmux
-Tags: `base-tmux`
-```bash
-ansible-playbook playbooks/base.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-tmux --check
-```
-
-#### Ensure docker installed, configured, enabled and started
-1. Configure on your playbook the var `base_docker_enabled: true`
-2. Launch the playbook:
-```bash
-ansible-playbook playbooks/config_services.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags base-docker --check
-```
-
-## Launching config_services ansible playbook
-#### Launch the full role
-Tags: `config-services`
-```bash
-ansible-playbook playbooks/config_services -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags config-services --check
-```
-
-#### Configure the best banner of the world
-Tags: `config-services-banner`
-```bash
-ansible-playbook playbooks/config_services.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags config-services-banner --check
-```
-
-#### Install, configure and start fail2ban:
-1. Configure on your playbook the var `fail2ban_enabled: true`
-2. Launch the playbook:
-Tags: `config-services-fail2ban`
-```bash
-ansible-playbook playbooks/config_services.yaml -i inventories/inventory.ini --vault-password-file=vault_password.txt --diff --tags config-services-fail2ban --check
-```
-
-#### More
-To check more available tasks check [roles/config_services/tasks/main.yaml](roles/config_services/tasks/main.yaml)
-
-## Next Steps
-| Status | Task |
-|----------|----------|
-| :white_check_mark: | Config the sshd service to not accept password authentication |
-| :hourglass_flowing_sand: | Move the roles to another github projects and import them here with ansible-galaxy |

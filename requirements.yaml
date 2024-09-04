@@ -7,3 +7,8 @@ roles:
     src: git@github.com:titocampis/ansible-role-b4syk.git
     scm: git
     version: "0.0.1"
+
+  - name: f0rt
+    src: git@github.com:titocampis/ansible-role-f0rt.git
+    scm: git
+    version: "0.0.1"
