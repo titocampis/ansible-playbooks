@@ -1,0 +1,22 @@
+- name: Playbook to configure the basics
+  hosts: 
+  become: true
+
+  vars:
+    b4syk_main_user: "" 
+    b4syk_main_user_authkey: ""
+    
+    b4syk_docker_enabled: true
+
+  vars_files:
+    - ../general_vars.yaml
+    - ../vault.yaml
+
+  # tasks:
+  #   - name: Debug test_var
+  #     debug:
+  #       var: ansible_managed
+
+  roles:
+    - "b4syk"
+    - "f0rt"

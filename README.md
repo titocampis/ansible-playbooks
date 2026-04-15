@@ -46,31 +46,40 @@ ansible-galaxy collection list
 sudo su
 ```
 
-:one: Change the sshd port configuration in order to provide a little more security on ssh connections:
+:two: Change the sshd port configuration in order to provide a little more security on ssh connections:
 
-- Edit the sshd service config file:
-```bash
-vim /etc/ssh/sshd_config
+Edit the sshd service config file:
+```
+vim /etc/ssh/sshd_config.d/<custom_file>
 ```
 
-- Replace the `Port 22` by `Port XXX`
+- Add entry `Port XXX`
 - Restart the service:
 ```bash
 service sshd restart
 ```
 
-> [!TIP]
-> It can be done automatically, but be carefull with the previous configuration and always check the file content before restart the sshd service:
-> ```bash
-> sed -i 's/#Port 22/Port XXX/' /etc/ssh/sshd_config
-> ```
+:three: Create your main user with home and set a password
+```bash
+sudo useradd -m <username>
+```
+```bash
+sudo passwd <username>
+```
+
+:four: Update and upgrade your system
+
+:three: Reboot
+```bash
+sudo reboot
+```
 
 ## Sensitive Data managed by Ansible vault
 To store the Ansible Sensitive Data we use [Ansible vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html).
 
 To create the vault.yaml file:
 ```bash
-ansible-vault create vault.yaml
+ansible-vault create vault.yaml --vault-password-file=vault-password.txt
 ```
 
 It will ask for password, and then **vi** editor will open and we need to fulfill it in yaml format like this:
